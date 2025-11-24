@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GeoGuesser Clone</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+e2nYw7r3bYqQ3m3s3b4zqz5Gg0h2o9qPLuP0kP58=" crossorigin="" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>GeoGuesser Clone</h1>
+      <div class="controls">
+        <div>Round <span id="round">0</span> / <span id="rounds-total">5</span></div>
+        <div>Score: <span id="score">0</span></div>
+        <button id="startBtn">Start Game</button>
+        <button id="nextBtn" disabled>Next</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="viewer">
+        <div id="imageWrap">
+          <img id="sceneImage" alt="Scene" />
+        </div>
+        <div id="info">
+          <div id="distance"></div>
+          <div id="roundScore"></div>
+          <div id="locationCredit" class="muted"></div>
+        </div>
+      </section>
+
+      <section id="mapwrap">
+        <div id="map"></div>
+        <div id="hintWrap">
+          <label>Hint (show country/region): <input type="checkbox" id="hintToggle" /></label>
+          <div id="hint" class="muted"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <small>Replace images.json with your own dataset (image URL + lat + lon). This demo uses OSM tiles (Leaflet).</small>
+    </footer>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-o9N1j7k3q+V2mIqz0q8T4ht6fNQ+0f1YbM6QmY0wY+I=" crossorigin=""></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
