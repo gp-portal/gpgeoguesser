@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GeoGuesser Clone</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-sA+e2nYw7r3bYqQ3m3s3b4zqz5Gg0h2o9qPLuP0kP58=" crossorigin="" />
+  <!-- Leaflet CSS (removed integrity attribute to avoid SRI mismatch blocking) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 </head>
 <body>
   <div id="app">
@@ -47,9 +46,8 @@
     </footer>
   </div>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-o9N1j7k3q+V2mIqz0q8T4ht6fNQ+0f1YbM6QmY0wY+I=" crossorigin=""></script>
+  <!-- Leaflet JS (removed integrity attribute to avoid SRI mismatch blocking) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
   <script src="app.js"></script>
 </body>

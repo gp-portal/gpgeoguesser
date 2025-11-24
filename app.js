@@ -47,6 +47,12 @@ function shuffle(arr){
 
 // Setup Leaflet map
 function initMap(){
+  // If leaflet didn't load (L is undefined) throw informative error
+  if (typeof L === 'undefined') {
+    console.error('Leaflet (L) is not available. Check that leaflet.js loaded successfully.');
+    return;
+  }
+
   map = L.map('map', {worldCopyJump: true}).setView([20,0], 2);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -73,9 +79,9 @@ function onMapClick(e){
   const actual = images[currentIndex];
   const actualLatLng = L.latLng(actual.lat, actual.lng);
 
-  // actual marker
+  // use default marker icon (avoid external custom icon fetching)
   if (!actualMarker) {
-    actualMarker = L.marker(actualLatLng, {icon: L.icon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/854/854866.png', iconSize:[24,24]})}).addTo(map);
+    actualMarker = L.marker(actualLatLng).addTo(map);
   } else {
     actualMarker.setLatLng(actualLatLng);
   }
@@ -87,9 +93,11 @@ function onMapClick(e){
     line = L.polyline([latlng, actualLatLng], {color:'#ff4d4f'}).addTo(map);
   }
 
-  // zoom to fit
-  const group = L.featureGroup([guessMarker, actualMarker]);
-  map.fitBounds(group.getBounds().pad(0.2));
+  // zoom to fit only if map exists
+  if (map) {
+    const group = L.featureGroup([guessMarker, actualMarker]);
+    map.fitBounds(group.getBounds().pad(0.2));
+  }
 
   // compute distance (km) and score
   const distKm = haversine(latlng.lat, latlng.lng, actual.lat, actual.lng);
@@ -100,8 +108,8 @@ function onMapClick(e){
   totalScore += points;
   scoreEl.textContent = totalScore;
 
-  // show credit
-  locationCreditEl.textContent = `Answer location: ${actual.name}`;
+  // show credit / location name
+  locationCreditEl.textContent = `Answer location: ${actual.name || 'Unknown'}`;
 
   hasGuessed = true;
   nextBtn.disabled = false;
@@ -160,20 +168,20 @@ function showImage(imageObj){
   sceneImage.src = imageObj.url;
   sceneImage.alt = imageObj.name || 'Scene';
   hintEl.textContent = imageObj.hint || '';
-  document.getElementById('locationCredit').textContent = '';
+  locationCreditEl.textContent = '';
 }
 
 // reset markers/vars for next round
 function resetRoundState(){
-  if (guessMarker) { map.removeLayer(guessMarker); guessMarker = null; }
-  if (actualMarker) { map.removeLayer(actualMarker); actualMarker = null; }
-  if (line) { map.removeLayer(line); line = null; }
+  if (guessMarker && map) { map.removeLayer(guessMarker); guessMarker = null; }
+  if (actualMarker && map) { map.removeLayer(actualMarker); actualMarker = null; }
+  if (line && map) { map.removeLayer(line); line = null; }
   distanceEl.textContent = '';
   roundScoreEl.textContent = '';
   hasGuessed = false;
   nextBtn.disabled = true;
-  // center map outwards for fresh guessing
-  map.setView([20,0], 2);
+  // center map outwards for fresh guessing (only if map exists)
+  if (map) map.setView([20,0], 2);
 }
 
 // end game
@@ -185,7 +193,7 @@ function endGame(){
   roundEl.textContent = '0';
   sceneImage.src = '';
   hintEl.textContent = '';
-  document.getElementById('locationCredit').textContent = '';
+  locationCreditEl.textContent = '';
 }
 
 // Next button click
